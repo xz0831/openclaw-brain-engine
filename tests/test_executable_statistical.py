@@ -71,4 +71,3 @@ def test_executor_pelgrom_outer_loop_builds_sigma_sqrtwl_series(tmp_path):
     res = run_recipe(rec, _AreaRunner(), corpus=SpecimenCorpus(str(tmp_path)), project=False)
     assert {c.id: c.verdict for c in res.claim_cards}["pel"] in (
         VerdictClass.VERIFIED, VerdictClass.VERIFIED_WITH_CAVEAT)
-

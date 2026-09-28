@@ -101,5 +101,3 @@ def test_corner_refuted_tight_bound_sky130(tmp_path):
     rec.claim_cards[0].mechanism.quant.bound = 30.2e6   # ss(29.97)/fs(30.01) fail the all-corners gate
     res = run_recipe(rec, NgspiceRunner(workdir=_wd(tmp_path)), corpus=SpecimenCorpus(str(tmp_path)), project=False)
     assert {c.id: c.verdict for c in res.claim_cards}["ota5t_gbw_corner"] == VerdictClass.REFUTED
-
-
