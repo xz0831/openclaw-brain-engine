@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>openclaw-brain 엔진 소스 미리보기</title>
+  <style>
+    :root{color-scheme:light;font-family:system-ui,sans-serif;color:#102440;background:#f7fafc}
+    body{max-width:1080px;margin:auto;padding:34px 22px 72px;line-height:1.7}
+    h1{font-size:2.2rem;line-height:1.3;margin-bottom:.45rem}
+    h2{font-size:1.45rem;margin-top:2.2rem}
+    p{max-width:78ch}
+    .lead{font-size:1.17rem}
+    figure{margin:2rem 0;padding:10px;background:white;border:1px solid #d8e2ea;border-radius:14px}
+    img{display:block;width:100%;height:auto}
+    table{width:100%;border-collapse:collapse;background:white}
+    th,td{text-align:left;vertical-align:top;padding:14px;border:1px solid #d8e2ea}
+    th{background:#e9f2ff}
+    .note{padding:16px 20px;border-left:5px solid #268c83;background:#e5f7f3}
+    @media(max-width:640px){body{padding:18px 14px}table,thead,tbody,tr,th,td{display:block}th{border-bottom:0}td{margin-bottom:12px}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>openclaw-brain — 회로 설계 지식 처리 엔진</h1>
+    <p class="lead">사용자가 제공한 문헌을 근거가 연결된 지식 그래프로 만들고, 질문의 근거와 적용 범위를 드러내며, 별도의 회로 시뮬레이션으로 주장을 시험하는 엔진입니다.</p>
+    <figure><img src="assets/architecture-core.svg" alt="문서 수집, 질문 답변, 별도 회로 시뮬레이션의 세 경로. 원문과 축적 지식은 사용자 자료로 분리된다."></figure>
+    <h2>엔진과 사용자 자료</h2>
+    <table><thead><tr><th>엔진 소스에 포함하는 것</th><th>별도로 제공·보관하는 사용자 자료</th></tr></thead><tbody>
+      <tr><td>문서 파싱·청크 분할, LLM 추출·매칭·추론, 그래프 검색·저장 코드</td><td>문헌 원문과 추출문, 축적된 지식 그래프</td></tr>
+      <tr><td>답변 합성·답변 계약·MCP 도구</td><td>실제 질문·답변과 사용자별 평가 자료</td></tr>
+      <tr><td>직접 작성한 기본 템플릿·시드·레시피, 공개 PDK 연결 및 시뮬레이션·판정 코드</td><td>실행 후 생성된 netlist·로그·측정 결과, 주장 카드·규칙성 기록과 corpus</td></tr>
+    </tbody></table>
+    <h2>작동 흐름</h2>
+    <p>문서를 파싱하고 분할한 뒤 LLM 추출, 원문 근거 대조, 매칭과 추론을 거쳐 그래프에 기록합니다. 질문은 그래프 검색과 답변 합성을 거치며, 답변 계약은 인용 구조와 적용 범위 표시를 점검합니다. 인용이 있다는 사실만으로 문장의 의미가 옳다고 보증하지는 않습니다.</p>
+    <p>별도 회로 경로에서는 템플릿과 레시피로 만든 실험을 ngspice 또는 iverilog에서 실행하고 시험 조건과 판정 결과를 카드로 기록합니다. 일부 교차 PDK 결과는 규칙성으로 묶습니다. 저장된 카드의 판정 결과가 기본 답변에 자동 반영되는 기능은 아직 완성되지 않았습니다.</p>
+    <h2>현재 범위</h2>
+    <p class="note">엔진 소스와 합성 입력 시험을 제공합니다. 문헌 원문·축적된 지식 데이터·개발 저장소의 과거 이력은 포함하지 않습니다. PyMuPDF import를 차단한 단위시험 1,700개 통과·143개 건너뜀을 확인했습니다. 실제 서버·모델·PDK 환경의 배포 검증은 별도입니다. 소스 열람·심사는 허용하며, 실행·수정·재배포에는 별도 허락이 필요합니다.</p>
+  </main>
+</body>
+</html>

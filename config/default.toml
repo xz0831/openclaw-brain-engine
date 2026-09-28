@@ -1,0 +1,45 @@
+# Portable local example. Replace model_id with a model your local server actually serves.
+# This model ID is a placeholder, not a claim that any model is installed.
+[deployment]
+egress = "local-only"
+
+[neo4j]
+uri = "bolt://127.0.0.1:7687"
+user = "neo4j"
+password = "openclaw-brain-dev" # development example; override with OPENCLAW_NEO4J_PASSWORD
+database = "neo4j"
+
+[models]
+default_extraction = "local-example"
+default_reasoning = "local-example"
+default_matching = "local-example"
+default_vision = ""
+default_figure_analysis = ""
+
+[[models.catalog]]
+name = "local-example"
+provider = "local"
+model_id = "REPLACE_WITH_LOCAL_MODEL_ID"
+endpoint = "http://127.0.0.1:8000/v1"
+tier = "local"
+
+[figures]
+slide_analysis_model = ""
+slide_analysis_fallback = ""
+
+[embedding]
+model = "REPLACE_WITH_EMBEDDING_MODEL_ID"
+dimensions = 1024
+
+[reasoning]
+context_token_budget = 8000
+chunk_token_budget = 6000
+output_token_budget = 16000
+
+[resilience]
+fallback_extraction = []
+fallback_reasoning = []
+fallback_matching = []
+
+[executable]
+corpus_dir = "corpus"

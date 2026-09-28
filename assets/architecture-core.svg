@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="950" viewBox="0 0 1400 950" role="img" aria-labelledby="title desc">
+  <title id="title">openclaw-brain 엔진 구조</title>
+  <desc id="desc">사용자 문서에서 지식 그래프를 만드는 경로, 그래프를 검색해 답변 계약을 거쳐 MCP로 제공하는 경로, 별도의 회로 시뮬레이션과 주장 카드 기록 경로. 원문과 축적 자료는 사용자 제공 자료이며 기본 답변 경로와 카드 자동 연결은 표시하지 않는다.</desc>
+  <defs>
+    <marker id="blue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#3867aa"/></marker>
+    <marker id="teal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#268c83"/></marker>
+    <marker id="orange-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#b96722"/></marker>
+    <style>
+      text{font-family:Arial,"Noto Sans KR",sans-serif;fill:#102440}
+      .title{font-size:37px;font-weight:700}
+      .section{font-size:26px;font-weight:700}
+      .body{font-size:24px;font-weight:600;text-anchor:middle}
+      .small{font-size:22px;text-anchor:middle}
+      .blue{fill:#e9f2ff;stroke:#3867aa}
+      .teal{fill:#e5f7f3;stroke:#268c83;stroke-dasharray:8 6}
+      .orange{fill:#fff0df;stroke:#b96722}
+      .box{stroke-width:2.5;rx:16}
+      .lane{fill:#fff;stroke:#d8e2ea;stroke-width:2;rx:20}
+      .line-blue{fill:none;stroke:#3867aa;stroke-width:3;marker-end:url(#blue-arrow)}
+      .line-teal{fill:none;stroke:#268c83;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#teal-arrow)}
+      .line-orange{fill:none;stroke:#b96722;stroke-width:3;marker-end:url(#orange-arrow)}
+    </style>
+  </defs>
+  <rect width="1400" height="950" fill="#f7fafc"/>
+  <text x="60" y="62" class="title">회로 설계 지식 처리 엔진</text>
+  <text x="60" y="96" font-size="22">파랑: 처리 경로　 청록: 별도 보관되는 사용자 자료　 주황: 별도 회로 실행 경로</text>
+
+  <rect class="lane" x="35" y="115" width="1330" height="250"/>
+  <text class="section" x="60" y="151">01  문서 수집과 지식 그래프</text>
+  <rect class="box blue" x="60" y="181" width="185" height="108"/>
+  <text class="body" x="152" y="224"><tspan x="152">사용자 제공</tspan><tspan x="152" dy="31">문서</tspan></text>
+  <rect class="box blue" x="285" y="181" width="185" height="108"/>
+  <text class="body" x="377" y="224"><tspan x="377">파싱</tspan><tspan x="377" dy="31">청크 분할</tspan></text>
+  <rect class="box blue" x="510" y="181" width="275" height="108"/>
+  <text class="body" x="647" y="209"><tspan x="647">LLM 추출</tspan><tspan x="647" dy="31">매칭 · 추론</tspan></text>
+  <rect class="box teal" x="825" y="181" width="230" height="108"/>
+  <text class="body" x="940" y="224"><tspan x="940">지식 그래프</tspan><tspan class="small" x="940" dy="31">사용자 자료</tspan></text>
+  <rect class="box teal" x="1100" y="181" width="240" height="108"/>
+  <text class="body" x="1220" y="224"><tspan x="1220">근거 원문 참조</tspan><tspan class="small" x="1220" dy="31">사용자 자료</tspan></text>
+  <path class="line-blue" d="M245 235H275"/><path class="line-blue" d="M470 235H500"/><path class="line-blue" d="M785 235H815"/>
+  <path class="line-teal" d="M377 289V325H1220V299"/>
+  <text x="796" y="351" font-size="22" text-anchor="middle" fill="#268c83">문서에서 원문 위치를 참조</text>
+
+  <rect class="lane" x="35" y="390" width="1330" height="250"/>
+  <text class="section" x="60" y="426">02  질문에서 MCP 답변까지</text>
+  <rect class="box blue" x="60" y="474" width="165" height="108"/>
+  <text class="body" x="142" y="537">질문</text>
+  <rect class="box blue" x="270" y="474" width="205" height="108"/>
+  <text class="body" x="372" y="537">그래프 검색</text>
+  <rect class="box blue" x="520" y="474" width="205" height="108"/>
+  <text class="body" x="622" y="537">답변 합성</text>
+  <rect class="box blue" x="770" y="474" width="290" height="108"/>
+  <text class="body" x="915" y="511"><tspan x="915">답변 계약</tspan><tspan class="small" x="915" dy="32">인용 구조 · 범위 표기</tspan></text>
+  <rect class="box blue" x="1110" y="474" width="230" height="108"/>
+  <text class="body" x="1225" y="511"><tspan x="1225">MCP 도구</tspan><tspan x="1225" dy="32">답변</tspan></text>
+  <path class="line-blue" d="M225 528H260"/><path class="line-blue" d="M475 528H510"/><path class="line-blue" d="M725 528H760"/><path class="line-blue" d="M1060 528H1100"/>
+  <path class="line-teal" d="M940 289V447H372V464"/>
+  <path class="line-teal" d="M1220 289V455H622V464"/>
+  <text x="650" y="618" class="small">출처와 표시 범위를 확인하며, 의미의 정답을 보증하지 않음</text>
+
+  <rect class="lane" x="35" y="665" width="1330" height="230"/>
+  <text class="section" x="60" y="703">03  별도 회로 실행 경로</text>
+  <rect class="box orange" x="60" y="746" width="215" height="108"/>
+  <text class="body" x="167" y="783"><tspan x="167">기본 템플릿</tspan><tspan x="167" dy="30">시드 · 레시피</tspan></text>
+  <rect class="box orange" x="315" y="746" width="220" height="108"/>
+  <text class="body" x="425" y="783"><tspan x="425">시뮬레이터</tspan><tspan class="small" x="425" dy="30">ngspice · iverilog</tspan></text>
+  <rect class="box orange" x="575" y="746" width="215" height="108"/>
+  <text class="body" x="682" y="783"><tspan x="682">판정기</tspan><tspan class="small" x="682" dy="30">정량 규칙 판정</tspan></text>
+  <rect class="box teal" x="830" y="746" width="230" height="108"/>
+  <text class="body" x="945" y="783"><tspan x="945">주장 카드</tspan><tspan class="small" x="945" dy="30">사용자 자료</tspan></text>
+  <rect class="box teal" x="1100" y="746" width="240" height="108"/>
+  <text class="body" x="1220" y="783"><tspan x="1220">규칙성 기록</tspan><tspan class="small" x="1220" dy="30">사용자 자료</tspan></text>
+  <path class="line-orange" d="M275 800H305"/><path class="line-orange" d="M535 800H565"/><path class="line-orange" d="M790 800H820"/><path class="line-orange" d="M1060 800H1090"/>
+  <text x="60" y="928" font-size="22">저장된 카드가 기본 답변에 자동 연결되는 경로는 아직 완성되지 않았습니다.</text>
+</svg>

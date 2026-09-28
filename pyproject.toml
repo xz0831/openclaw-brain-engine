@@ -1,0 +1,84 @@
+[project]
+name = "openclaw-brain"
+version = "0.1.0"
+description = "Engineering knowledge graph, memory, and circuit verification engine"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.3",
+    "langchain-core>=0.3",
+    "langchain-anthropic>=0.3",
+    "langchain-openai>=0.3",
+    "langchain-google-genai>=4.0",
+    "neo4j>=5.25",
+    "sentence-transformers>=5.6,<6",  # core: query_knowledge embeds queries at read time, not just ingest. Bounded at the verified combo — the 2026-07-08 env-drift incident rode in on this line's old unbounded range (>=3.0 let an ad-hoc install pull transformers 5.13 and silently kill both MinerU backends; see the ingest extra)
+    "pydantic>=2.0",
+    "click>=8.0",
+    "tomli>=2.0",
+    "tomlkit>=0.13,<0.14",
+    "schemdraw>=0.23,<0.24",  # specimen->schematic rendering (why() attachment, viz audit loop) — pure-python SVG backend, matplotlib extra NOT pulled  # save_config() comment-preserving round-trip patch (config.py) — load_config() still uses tomli (read-only, no style-preservation need)
+    "mcp>=2.1.1",
+]
+
+[project.optional-dependencies]
+ingest = [
+    # The fragile ML stack is pinned AS A SET. Incident (2026-07-08 16:04): an ad-hoc install —
+    # legal under the old unbounded ranges — bumped transformers to 5.13 and silently broke BOTH
+    # MinerU backends for a day (5.x removes find_pruneable_heads_and_indices etc.), on top of a
+    # latent torch↔torchvision ABI mismatch (torchvision::nms missing). Declared pins cannot stop
+    # an ad-hoc `install -U`, but they make `uv sync` restore the verified set in one command and
+    # give `openclaw-brain doctor` a contract to check. These version bounds retain the development environment constraints.
+    "mineru[all]>=3.4.3,<4",  # Optional PDF parser; upstream license terms require separate review (THIRD_PARTY.md).
+    "transformers>=4.57.3,!=4.57.2,<5",  # mineru 3.x STILL pins <5 (floor 4.57.3); 5.x breaks both backends
+    "torch>=2.13,<2.14",  # ↔ torchvision is an ABI PAIR — bump only together (2.13↔0.28)
+    "torchvision>=0.28,<0.29",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+]
+
+[project.scripts]
+openclaw-brain = "openclaw_brain.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Bundle the repo-tree config/ files as package data so a wheel installed outside
+# the repo checkout (e.g. `pip install openclaw-brain`) still has a config to load.
+# load_config()/get_schema_path() in src/openclaw_brain/config.py fall back to these
+# via importlib.resources when no repo-tree config/ dir is present. Editable installs
+# (`pip install -e .`) are unaffected — they keep resolving the repo-tree config/ dir.
+[tool.hatch.build.targets.wheel.force-include]
+"config/default.toml" = "openclaw_brain/_data/default.toml"
+"config/neo4j_schema.cypher" = "openclaw_brain/_data/neo4j_schema.cypher"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "smoke: heavy end-to-end ingestion smoke (real MinerU); skipped unless RUN_INGEST_SMOKE=1 — run after any shared-substrate (config/deps/env/schema) change",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.7",
+]
+
+[tool.uv]
+# Lock ONLY for the home operating instance (darwin/arm64, py3.11) — the one environment that
+# runs ingests and therefore needs the fragile ML set reproducible. This lock is not a
+# validation of installation on other platforms. Unconstrained, uv also resolves windows/linux branches where
+# mineru[all]'s simulator-serving deps (lmdeploy/sglang) pin torch<=2.8 and conflict with our
+# 2.12/0.27 ABI pair — environments this lock will never install into.
+environments = [
+    "sys_platform == 'darwin' and python_version >= '3.11' and python_version < '3.12'",
+]

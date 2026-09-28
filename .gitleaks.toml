@@ -1,0 +1,9 @@
+title = "openclaw-brain engine"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "One fixed unsigned fake JWT used by authentication unit tests; no whole-file exclusions."
+regexTarget = "secret"
+regexes = ['^eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9\.test$']

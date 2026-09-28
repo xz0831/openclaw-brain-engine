@@ -1,0 +1,25 @@
+services:
+  neo4j:
+    image: neo4j:5.26-community  # Explicit local development version; review upgrades before using them.
+    container_name: openclaw-neo4j
+    restart: unless-stopped
+    ports:
+      # Local development ports bind only to loopback.
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH:-neo4j/openclaw-brain-dev}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_memory_heap_max__size: 1G
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  neo4j_data:
+  neo4j_logs:

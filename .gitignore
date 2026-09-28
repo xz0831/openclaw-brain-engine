@@ -1,0 +1,23 @@
+# Generated files and local environments
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.venv/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Local credentials and user data
+.env
+.env.*
+!.env.example
+corpus/
+corpus_staging/
+experiments/
+bakeoff/
+scratchpad/
+*.log
+.playwright-mcp/

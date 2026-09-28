@@ -1,0 +1,28 @@
+flowchart LR
+  subgraph ingest[문서 수집 · 사용자 자료는 별도 보관]
+    D[사용자 제공 문서] --> P[파싱 · 청크]
+    P --> L[LLM 추출 · 매칭 · 추론]
+    L --> G[(지식 그래프<br/>사용자 자료)]
+    P -. 원문 위치 참조 .-> R[(근거 원문 참조<br/>사용자 자료)]
+  end
+  subgraph answer[질문과 답변]
+    Q[질문] --> S[그래프 검색]
+    G --> S
+    S --> A[답변 합성]
+    R -. 출처·참조 ID .-> A
+    A --> C[답변 계약<br/>인용 구조 · 범위 표기]
+    C --> M[MCP 도구 · 답변]
+  end
+  subgraph circuit[별도 회로 실행 경로]
+    T[기본 템플릿 · 시드<br/>레시피] --> X[시뮬레이터<br/>ngspice · iverilog]
+    X --> O[판정기<br/>정량 규칙 판정]
+    O --> K[(주장 카드<br/>사용자 자료)]
+    K --> V[(규칙성 기록<br/>사용자 자료)]
+  end
+  classDef process fill:#e9f2ff,stroke:#3867aa,color:#102440
+  classDef data fill:#e5f7f3,stroke:#268c83,color:#102e2c
+  classDef circuit fill:#fff0df,stroke:#b96722,color:#40230d
+  class D,P,L,Q,S,A,C,M process
+  class G,R data
+  class T,X,O circuit
+  class K,V data
